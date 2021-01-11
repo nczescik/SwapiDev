@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SwapiDev.DAL;
 using SwapiDev.Extensions;
 
 namespace SwapiDev
@@ -26,7 +27,7 @@ namespace SwapiDev
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext applicationDbContext)
         {
             if (env.IsDevelopment())
             {
@@ -37,6 +38,8 @@ namespace SwapiDev
                 .UseRouting()
                 .UseAuthorization()
                 .UseEndpointsExt();
+
+            applicationDbContext.Database.EnsureCreated();
         }
     }
 }

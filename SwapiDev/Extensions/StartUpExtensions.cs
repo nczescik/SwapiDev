@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SwapiDev.DAL;
+using WebAPI.DAL.Interfaces;
+using WebAPI.DAL.Repositories;
 
 namespace SwapiDev.Extensions
 {
@@ -8,10 +12,13 @@ namespace SwapiDev.Extensions
     {
         public static IServiceCollection AddDependencyInjection(this IServiceCollection services)
         {
+            services.AddScoped<ApplicationDbContext>();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             return services;
         }
         public static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("Database")));
             return services;
         }
 
