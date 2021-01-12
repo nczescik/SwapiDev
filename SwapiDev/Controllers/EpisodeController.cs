@@ -2,6 +2,7 @@
 using SwapDev.Services.Services.Episodes;
 using SwapiDev.WebAPI.Models;
 using System.Collections.Generic;
+using WebApi.Helpers;
 
 namespace SwapiDev.WebAPI.Controllers
 {
@@ -31,7 +32,9 @@ namespace SwapiDev.WebAPI.Controllers
                 });
             }
 
-            return Json(result);
+            var json = JsonHelper<List<EpisodeModel>>.JsonConverter(result);
+
+            return Ok(json);
         }
 
         [HttpGet("Episodes/{episodeId}")]
@@ -50,7 +53,9 @@ namespace SwapiDev.WebAPI.Controllers
                 Rating = episode.Rating
             };
 
-            return Json(model);
+            var json = JsonHelper<EpisodeModel>.JsonConverter(model);
+
+            return Ok(json);
         }
     }
 }

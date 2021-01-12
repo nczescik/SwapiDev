@@ -8,7 +8,7 @@ namespace SwapDev.Services.Helpers
         public static dynamic GetJson(string url, string neededValue = null)
         {
             using var wc = new WebClient();
-            var source = wc.DownloadString(url); 
+            var source = wc.DownloadString(url);
             dynamic data = JObject.Parse(source);
 
             if (neededValue != null)
