@@ -19,7 +19,7 @@ namespace SwapiDev.WebAPI.Controllers
         {
             var episodes = _episodeService.GetEpisodesList();
 
-            return Ok(episodes);
+            return Json(episodes);
         }
 
         [HttpGet("Episodes/{episodeId}")]
@@ -34,7 +34,7 @@ namespace SwapiDev.WebAPI.Controllers
                 Rating = episode.Rating
             };
 
-            return Ok(model);
+            return Json(model);
         }
     }
 }
