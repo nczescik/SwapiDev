@@ -1,0 +1,5 @@
+<div *ngFor="let e of episodes">
+    {{e.Title}}
+
+    <button (click)="showEpisodeDetails(e.EpisodeId)">Details</button>
+</div>

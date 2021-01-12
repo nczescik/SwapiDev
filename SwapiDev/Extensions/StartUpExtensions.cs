@@ -48,6 +48,20 @@ namespace SwapiDev.Extensions
             return app;
         }
 
+        public static IApplicationBuilder UseCorsExt(this IApplicationBuilder app, IConfiguration configuration)
+        {
+            //var appSettingsSection = configuration.GetSection("AppSettings");
+            //var appSettings = appSettingsSection.Get<AppSettings>();
+
+            app.UseCors(builder =>
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
+
+            return app;
+        }
+
         public static IApplicationBuilder UseSpa(this IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseSpa(spa =>

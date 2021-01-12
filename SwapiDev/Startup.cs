@@ -24,6 +24,7 @@ namespace SwapiDev
                 .AddDependencyInjection()
                 .AddSpaStaticFiles()
                 .AddDbContext(Configuration)
+                .AddCors()
                 .AddControllers();
         }
 
@@ -32,7 +33,8 @@ namespace SwapiDev
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage()
+                    .UseCorsExt(Configuration);
             }
 
             app.UseExceptionHandler("/error")

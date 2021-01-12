@@ -6,17 +6,18 @@ using WebApi.Helpers;
 
 namespace SwapiDev.WebAPI.Controllers
 {
-    public class EpisodeController : Controller
+    [Route("[controller]")]
+    [ApiController]
+    public class EpisodesController : ControllerBase
     {
         private readonly IEpisodeService _episodeService;
-        public EpisodeController(
+        public EpisodesController(
             IEpisodeService episodeService)
         {
             _episodeService = episodeService;
         }
-
-        [HttpGet("")]
-        [HttpGet("Episodes")]
+        
+        [HttpGet("GetEpisodes")]
         public IActionResult GetEpisodes()
         {
             var result = new List<EpisodeModel>();
@@ -37,7 +38,7 @@ namespace SwapiDev.WebAPI.Controllers
             return Ok(json);
         }
 
-        [HttpGet("Episodes/{episodeId}")]
+        [HttpGet("GetEpisode/{episodeId}")]
         public IActionResult GetEpisode(long episodeId)
         {
             var episode = _episodeService.GetEpisode(episodeId);
@@ -56,6 +57,14 @@ namespace SwapiDev.WebAPI.Controllers
             var json = JsonHelper<EpisodeModel>.JsonConverter(model);
 
             return Ok(json);
+        }
+
+        [HttpPost("RateEpisode")]
+        public IActionResult RateEpisode(EpisodeRatingModel model)
+        {   
+            //var episode = _episodeService.RateEpisode(model.EpisodeId, model.Rating);
+                
+            return Ok();
         }
     }
 }
