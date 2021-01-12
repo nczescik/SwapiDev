@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SwapDev.Services.Services.Episodes;
 using SwapiDev.DAL;
 using WebAPI.DAL.Interfaces;
 using WebAPI.DAL.Repositories;
@@ -14,6 +15,7 @@ namespace SwapiDev.Extensions
         {
             services.AddScoped<ApplicationDbContext>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IEpisodeService, EpisodeService>();
             return services;
         }
         public static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)

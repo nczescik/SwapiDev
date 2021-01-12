@@ -5,7 +5,7 @@ namespace SwapiDev.DAL
 {
     public class ApplicationDbContext : DbContext
     {
-        public DbSet<Episode> Episodes { get; set; }
+        public DbSet<EpisodeRating> EpisodesRatings { get; set; }
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
 
