@@ -11,11 +11,11 @@ namespace SwapDev.Services.Services.Episodes
 {
     public class EpisodeService : IEpisodeService
     {
-        private readonly IRepository<Episode> _episodeRepository;
+        private readonly IRepository<EpisodeRating> _episodeRatingRepository;
         public EpisodeService(
-            IRepository<Episode> episodeRepository)
+            IRepository<EpisodeRating> episodeRatingRepository)
         {
-            _episodeRepository = episodeRepository;
+            _episodeRatingRepository = episodeRatingRepository;
         }
 
         public EpisodeDto GetEpisode(long episodeId)
@@ -38,7 +38,7 @@ namespace SwapDev.Services.Services.Episodes
                 throw new Exception("Episode doesn't exist");
             }
 
-            var episodeRating = _episodeRepository
+            var episodeRating = _episodeRatingRepository
                 .GetDbSet()
                 .Where(er => er.EpisodeId == episodeId)
                 .Select(er => er.Rating)
@@ -68,6 +68,18 @@ namespace SwapDev.Services.Services.Episodes
                 .DeserializeObject<List<EpisodeDto>>(json);
 
             return episodes;
+        }
+
+        public long RateEpisode(long episodeId, int rating)
+        {
+            _episodeRatingRepository
+                .Add(new EpisodeRating
+                {
+                    EpisodeId = episodeId,
+                    Rating = rating
+                });
+
+            return episodeId;
         }
     }
 }

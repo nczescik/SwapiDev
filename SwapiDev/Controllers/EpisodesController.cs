@@ -16,7 +16,7 @@ namespace SwapiDev.WebAPI.Controllers
         {
             _episodeService = episodeService;
         }
-        
+
         [HttpGet("GetEpisodes")]
         public IActionResult GetEpisodes()
         {
@@ -61,9 +61,13 @@ namespace SwapiDev.WebAPI.Controllers
 
         [HttpPost("RateEpisode")]
         public IActionResult RateEpisode(EpisodeRatingModel model)
-        {   
-            //var episode = _episodeService.RateEpisode(model.EpisodeId, model.Rating);
-                
+        {
+            if (model.Rating == null)
+            {
+                throw new System.Exception("You have to select an option!");
+            }
+            _episodeService.RateEpisode(model.EpisodeId, model.Rating.Value);
+
             return Ok();
         }
     }

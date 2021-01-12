@@ -7,5 +7,6 @@ namespace SwapDev.Services.Services.Episodes
     {
         EpisodeDto GetEpisode(long EpisodeId);
         IList<EpisodeDto> GetEpisodesList();
+        long RateEpisode(long episodeId, int rating);
     }
 }

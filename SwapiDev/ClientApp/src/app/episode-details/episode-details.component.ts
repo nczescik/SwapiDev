@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute} from '@angular/router';
+import { ActivatedRoute, Router} from '@angular/router';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -17,7 +17,8 @@ export class EpisodeDetailsComponent implements OnInit, OnDestroy {
 
   constructor(private fb: FormBuilder,
     private httpClient: HttpClient,
-    private route: ActivatedRoute) { 
+    private route: ActivatedRoute,
+    private router: Router) { 
     }
 
   ngOnInit(): void {
@@ -45,7 +46,9 @@ export class EpisodeDetailsComponent implements OnInit, OnDestroy {
       EpisodeId: this.id,
       Rating: this.EpisodeRatingModel.value.Rating != '' ? Number(this.EpisodeRatingModel.value.Rating) : null
     }
-    this.httpClient.post('https://localhost:44379/Episodes/RateEpisode', body).subscribe();
+    this.httpClient.post('https://localhost:44379/Episodes/RateEpisode', body).subscribe(() => {
+      window.location.reload();
+    });
   }
 
 }
