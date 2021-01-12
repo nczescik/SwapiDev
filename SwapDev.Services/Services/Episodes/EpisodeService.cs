@@ -24,8 +24,9 @@ namespace SwapDev.Services.Services.Episodes
             var episodeRating = _episodeRatingRepository
                    .GetDbSet()
                    .Where(er => er.EpisodeId == EpisodeId)
+                   .Select(er => er.Rating)
                    .DefaultIfEmpty()
-                   .Average(er => er.Rating);
+                   .Average();
 
             var episodeDto = new EpisodeDto
             {

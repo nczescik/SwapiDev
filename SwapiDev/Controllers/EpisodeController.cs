@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SwapDev.Services.Services.Episodes;
+using SwapiDev.WebAPI.Models;
 
 namespace SwapiDev.WebAPI.Controllers
 {
@@ -26,7 +27,14 @@ namespace SwapiDev.WebAPI.Controllers
         {
             var episode = _episodeService.GetEpisode(episodeId);
 
-            return Ok(episode);
+            var model = new EpisodeModel
+            {
+                EpisodeId = episode.Episode_Id,
+                Title = episode.Title,
+                Rating = episode.Rating
+            };
+
+            return Ok(model);
         }
     }
 }
