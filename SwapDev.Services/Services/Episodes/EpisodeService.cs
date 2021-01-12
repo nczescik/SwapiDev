@@ -25,23 +25,26 @@ namespace SwapDev.Services.Services.Episodes
             var results = WebClientHelper.GetValue("https://swapi.dev/api/films/", "results");
 
             List<EpisodeDto> episodes = JsonConvert.DeserializeObject<List<EpisodeDto>>(results);
-            
-            var episodeTitle = episodes
+
+            var episode = episodes
                 .Where(e => e.Episode_Id == episodeId)
-                .Select(e => e.Title)
                 .FirstOrDefault();
 
             var episodeRating = _episodeRepository
-                   .GetDbSet()
-                   .Where(er => er.EpisodeId == episodeId)
-                   .Select(er => er.Rating)
-                   .DefaultIfEmpty()
-                   .Average();
+                .GetDbSet()
+                .Where(er => er.EpisodeId == episodeId)
+                .Select(er => er.Rating)
+                .DefaultIfEmpty()
+                .Average();
 
             var episodeDto = new EpisodeDto
             {
                 Episode_Id = episodeId,
-                Title = episodeTitle,
+                Title = episode.Title,
+                Opening_Crawl = episode.Opening_Crawl,
+                Director = episode.Director,
+                Producer = episode.Producer,
+                Release_Date = episode.Release_Date,
                 Rating = episodeRating
             };
 
@@ -50,9 +53,11 @@ namespace SwapDev.Services.Services.Episodes
 
         public IList<EpisodeDto> GetEpisodesList()
         {
-            var results = WebClientHelper.GetValue("https://swapi.dev/api/films/", "results");
+            var results = WebClientHelper
+                .GetValue("https://swapi.dev/api/films/", "results");
 
-            var episodes = JsonConvert.DeserializeObject<List<EpisodeDto>>(results);
+            var episodes = JsonConvert
+                .DeserializeObject<List<EpisodeDto>>(results);
 
             return episodes;
         }

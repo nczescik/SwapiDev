@@ -43,6 +43,10 @@ namespace SwapiDev.WebAPI.Controllers
             {
                 EpisodeId = episode.Episode_Id,
                 Title = episode.Title,
+                OpeningCrawl = episode.Opening_Crawl,
+                Director = episode.Director,
+                Producer = episode.Producer,
+                ReleaseDate = episode.Release_Date,
                 Rating = episode.Rating
             };
 
