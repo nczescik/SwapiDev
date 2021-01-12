@@ -2,6 +2,7 @@
 using SwapDev.Services.Dto;
 using SwapDev.Services.Helpers;
 using SwapiDev.DAL.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebAPI.DAL.Interfaces;
@@ -31,6 +32,11 @@ namespace SwapDev.Services.Services.Episodes
             var episode = episodes
                 .Where(e => e.Episode_Id == episodeId)
                 .FirstOrDefault();
+
+            if (episode == null)
+            {
+                throw new Exception("Episode doesn't exist");
+            }
 
             var episodeRating = _episodeRepository
                 .GetDbSet()

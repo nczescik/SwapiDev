@@ -22,6 +22,7 @@ namespace SwapiDev
         {
             services
                 .AddDependencyInjection()
+                .AddSpaStaticFiles()
                 .AddDbContext(Configuration)
                 .AddControllers();
         }
@@ -34,10 +35,12 @@ namespace SwapiDev
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection()
+            app.UseExceptionHandler("/error")
+                .UseHttpsRedirection()
                 .UseRouting()
                 .UseAuthorization()
-                .UseEndpointsExt();
+                .UseEndpointsExt()
+                .UseSpa(env);
 
             applicationDbContext.Database.EnsureCreated();
         }

@@ -1,6 +1,8 @@
 ﻿using Moq;
 using NUnit.Framework;
+using SwapDev.Services.Dto;
 using SwapDev.Services.Services.Episodes;
+using System;
 using System.Linq;
 using WebAPI.DAL.Interfaces;
 
@@ -29,7 +31,6 @@ namespace SwapiDev.Tests.Episode
             Assert.AreEqual(6, episodes.Count());
         }
 
-        [TestCase(0, null)]
         [TestCase(1, "The Phantom Menace")]
         [TestCase(2, "Attack of the Clones")]
         [TestCase(3, "Revenge of the Sith")]
@@ -46,6 +47,18 @@ namespace SwapiDev.Tests.Episode
 
             //assert
             Assert.AreEqual(title, episodes.Title);
+        }
+
+        [TestCase(0)]
+        public void GetEpisode_ReturnsEpisodeDoesntExistMessageException(long episodeId)
+        {
+            //arrange
+            var _episodeService = new EpisodeService(episodeRepository);
+
+            //assert
+            Assert.Throws(Is.TypeOf<Exception>()
+                .And.Message.EqualTo("Episode doesn't exist"),
+              () => _episodeService.GetEpisode(episodeId));
         }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using SwapDev.Services.Services.Episodes;
 using SwapiDev.DAL;
 using WebAPI.DAL.Interfaces;
@@ -24,6 +27,16 @@ namespace SwapiDev.Extensions
             return services;
         }
 
+        public static IServiceCollection AddSpaStaticFiles(this IServiceCollection services)
+        {
+            // In production, the Angular files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/dist";
+            });
+            return services;
+        }
+
         public static IApplicationBuilder UseEndpointsExt(this IApplicationBuilder app)
         {
             app.UseEndpoints(endpoints =>
@@ -31,6 +44,23 @@ namespace SwapiDev.Extensions
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+            });
+            return app;
+        }
+
+        public static IApplicationBuilder UseSpa(this IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            app.UseSpa(spa =>
+            {
+                // To learn more about options for serving an Angular SPA from ASP.NET Core,
+                // see https://go.microsoft.com/fwlink/?linkid=864501
+
+                spa.Options.SourcePath = "ClientApp";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseAngularCliServer(npmScript: "start");
+                }
             });
             return app;
         }
