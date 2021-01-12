@@ -5,7 +5,7 @@ namespace SwapDev.Services.Helpers
 {
     public class WebClientHelper
     {
-        public static dynamic GetValue(string url, string neededValue = null)
+        public static dynamic GetJson(string url, string neededValue = null)
         {
             using var wc = new WebClient();
             var source = wc.DownloadString(url); 

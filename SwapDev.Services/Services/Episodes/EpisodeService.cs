@@ -22,9 +22,11 @@ namespace SwapDev.Services.Services.Episodes
             //I wanted to be consistent with episode_id property, 
             //so that's why I am not fetching data by e.g. /films/1 
             //Value from URL does not fit with episode_id
-            var results = WebClientHelper.GetValue("https://swapi.dev/api/films/", "results");
+            var json = WebClientHelper
+                .GetJson("https://swapi.dev/api/films/", "results");
 
-            List<EpisodeDto> episodes = JsonConvert.DeserializeObject<List<EpisodeDto>>(results);
+            List<EpisodeDto> episodes = JsonConvert
+                .DeserializeObject<List<EpisodeDto>>(json);
 
             var episode = episodes
                 .Where(e => e.Episode_Id == episodeId)
@@ -53,11 +55,11 @@ namespace SwapDev.Services.Services.Episodes
 
         public IList<EpisodeDto> GetEpisodesList()
         {
-            var results = WebClientHelper
-                .GetValue("https://swapi.dev/api/films/", "results");
+            var json = WebClientHelper
+                .GetJson("https://swapi.dev/api/films/", "results");
 
             var episodes = JsonConvert
-                .DeserializeObject<List<EpisodeDto>>(results);
+                .DeserializeObject<List<EpisodeDto>>(json);
 
             return episodes;
         }
