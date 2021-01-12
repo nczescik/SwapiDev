@@ -1,36 +1,47 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using SwapDev.Services.Dto;
+using SwapDev.Services.Helpers;
 using SwapiDev.DAL.Entities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using WebAPI.DAL.Interfaces;
 
 namespace SwapDev.Services.Services.Episodes
 {
     public class EpisodeService : IEpisodeService
     {
-        private readonly IRepository<EpisodeRating> _episodeRatingRepository;
+        private readonly IRepository<Episode> _episodeRepository;
         public EpisodeService(
-            IRepository<EpisodeRating> episodeRepository)
+            IRepository<Episode> episodeRepository)
         {
-            _episodeRatingRepository = episodeRepository;
+            _episodeRepository = episodeRepository;
         }
 
-        public EpisodeDto GetEpisode(long EpisodeId)
+        public EpisodeDto GetEpisode(long episodeId)
         {
-            var episodeRating = _episodeRatingRepository
+            //I wanted to be consistent with episode_id property, 
+            //so that's why I am not fetching data by e.g. /films/1 
+            //Value from URL does not fit with episode_id
+            var results = WebClientHelper.GetValue("https://swapi.dev/api/films/", "results");
+
+            List<EpisodeDto> episodes = JsonConvert.DeserializeObject<List<EpisodeDto>>(results);
+            
+            var episodeTitle = episodes
+                .Where(e => e.Episode_Id == episodeId)
+                .Select(e => e.Title)
+                .FirstOrDefault();
+
+            var episodeRating = _episodeRepository
                    .GetDbSet()
-                   .Where(er => er.EpisodeId == EpisodeId)
+                   .Where(er => er.EpisodeId == episodeId)
                    .Select(er => er.Rating)
                    .DefaultIfEmpty()
                    .Average();
 
             var episodeDto = new EpisodeDto
             {
-                Episode_Id = EpisodeId,
+                Episode_Id = episodeId,
+                Title = episodeTitle,
                 Rating = episodeRating
             };
 
@@ -39,11 +50,7 @@ namespace SwapDev.Services.Services.Episodes
 
         public IList<EpisodeDto> GetEpisodesList()
         {
-            using var wc = new WebClient();
-            var source = wc.DownloadString("https://swapi.dev/api/films/");
-
-            dynamic data = JObject.Parse(source);
-            var results = data["results"].ToString();
+            var results = WebClientHelper.GetValue("https://swapi.dev/api/films/", "results");
 
             var episodes = JsonConvert.DeserializeObject<List<EpisodeDto>>(results);
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SwapDev.Services.Services.Episodes;
 using SwapiDev.WebAPI.Models;
+using System.Collections.Generic;
 
 namespace SwapiDev.WebAPI.Controllers
 {
@@ -17,9 +18,20 @@ namespace SwapiDev.WebAPI.Controllers
         [HttpGet("Episodes")]
         public IActionResult GetEpisodes()
         {
+            var result = new List<EpisodeModel>();
             var episodes = _episodeService.GetEpisodesList();
 
-            return Json(episodes);
+            foreach (var episode in episodes)
+            {
+                result.Add(new EpisodeModel
+                {
+                    EpisodeId = episode.Episode_Id,
+                    Title = episode.Title,
+                    Rating = episode.Rating
+                });
+            }
+
+            return Json(result);
         }
 
         [HttpGet("Episodes/{episodeId}")]
