@@ -1,6 +1,5 @@
 ﻿using Moq;
 using NUnit.Framework;
-using SwapDev.Services.Dto;
 using SwapDev.Services.Services.Episodes;
 using System;
 using System.Linq;
@@ -10,19 +9,19 @@ namespace SwapiDev.Tests.Episode
 {
     public class EpisodeTest
     {
-        private IRepository<DAL.Entities.Episode> episodeRepository;
+        private IRepository<DAL.Entities.EpisodeRating> episodeRatingRepository;
 
         [SetUp]
         public void Setup()
         {
-            episodeRepository = new Mock<IRepository<DAL.Entities.Episode>>().Object;
+            episodeRatingRepository = new Mock<IRepository<DAL.Entities.EpisodeRating>>().Object;
         }
 
         [Test]
         public void GetEpisodes_ReturnsProperEpisodesCount()
         {
             //arrange
-            var _episodeService = new EpisodeService(episodeRepository);
+            var _episodeService = new EpisodeService(episodeRatingRepository);
 
             //act
             var episodes = _episodeService.GetEpisodesList();
@@ -40,7 +39,7 @@ namespace SwapiDev.Tests.Episode
         public void GetEpisode_ReturnsEpisodeDetails(long episodeId, string title)
         {
             //arrange
-            var _episodeService = new EpisodeService(episodeRepository);
+            var _episodeService = new EpisodeService(episodeRatingRepository);
 
             //act
             var episodes = _episodeService.GetEpisode(episodeId);
@@ -53,7 +52,7 @@ namespace SwapiDev.Tests.Episode
         public void GetEpisode_ReturnsEpisodeDoesntExistMessageException(long episodeId)
         {
             //arrange
-            var _episodeService = new EpisodeService(episodeRepository);
+            var _episodeService = new EpisodeService(episodeRatingRepository);
 
             //assert
             Assert.Throws(Is.TypeOf<Exception>()
